@@ -1,0 +1,44 @@
+entity Materials {
+    materialid Long
+    title String
+    file String
+}
+
+entity Themes {
+    themeid Long
+    title String
+}
+
+entity Tests {
+    testid Long
+    question String
+    answers String
+    correctAnswer String
+    materialid Long
+    themeid Long
+}
+
+entity TestedPerson {
+    firstName String
+    lastName String
+    email String
+}
+
+entity TestResult {
+    resultid Long
+    participantid Long
+    testid Long
+    score Integer
+    dateTaken ZonedDateTime
+
+}
+
+relationship ManyToMany {
+    Materials { tests (question) } to Tests
+    Themes { tests (question) } to Tests
+}
+
+relationship OneToOne {
+    TestResult {participant} to Tests
+    TestResult { participant } to TestedPerson
+}
