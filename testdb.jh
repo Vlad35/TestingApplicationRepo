@@ -1,5 +1,6 @@
+
+
 entity Materials {
-    materialid Long
     title String
     file String
 }
@@ -10,12 +11,9 @@ entity Themes {
 }
 
 entity Tests {
-    testid Long
     question String
     answers String
     correctAnswer String
-    materialid Long
-    themeid Long
 }
 
 entity TestedPerson {
@@ -25,20 +23,18 @@ entity TestedPerson {
 }
 
 entity TestResult {
-    resultid Long
-    participantid Long
-    testid Long
     score Integer
     dateTaken ZonedDateTime
 
 }
 
-relationship ManyToMany {
-    Materials { tests (question) } to Tests
-    Themes { tests (question) } to Tests
+relationship OneToMany {
+	Materials to Themes{materials(title)},
+    Themes to Tests{themes(themeid)}
 }
 
 relationship OneToOne {
-    TestResult {participant} to Tests
-    TestResult { participant } to TestedPerson
+	Tests to Materials{tests(testid)},
+    Tests to TestResult{tests(testid)},
+    TestedPerson to TestResult{tests(testid)}
 }
